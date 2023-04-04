@@ -11,12 +11,10 @@ public class LinkParserMain {
         AbstractLinkParser stackOverflowParser = new StackOverflowLinkParser();
         AbstractLinkParser nullParser = new NullLinkParser();
 
-        //chain of responsibility
         gitHubParser.setNext(stackOverflowParser);
         stackOverflowParser.setNext(nullParser);
 
         String[] urls = {
-                //set links here
                 "https://github.com/SpoiledPapyrus/TInkoffProject",
                 "https://github.com/sanyarnd/tinkoff-java-course-2022/",
                 "https://stackoverflow.com/questions/1642028/what-is-the-operator-in-c",

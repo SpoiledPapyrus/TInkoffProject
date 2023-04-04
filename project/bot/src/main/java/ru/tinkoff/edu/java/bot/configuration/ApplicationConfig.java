@@ -9,4 +9,4 @@ import ru.tinkoff.edu.java.bot.scheduler.Scheduler;
 @Validated
 @EnableScheduling
 @ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
-public record ApplicationConfig(@NotNull String test, @NotNull Scheduler scheduler) {}
+public record ApplicationConfig(@NotNull String test, @NotNull Scheduler scheduler,  @NotNull BotConfiguration bot) {}
