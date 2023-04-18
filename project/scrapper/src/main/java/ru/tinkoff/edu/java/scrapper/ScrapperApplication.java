@@ -2,33 +2,26 @@ package ru.tinkoff.edu.java.scrapper;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.web.reactive.function.client.WebClient;
-import ru.tinkoff.edu.java.linkparser.LinkData.GitHubLinkData;
-import ru.tinkoff.edu.java.linkparser.LinkData.StackOverflowLinkData;
-import ru.tinkoff.edu.java.scrapper.API.HTTP.HTTPGitHubClient;
-import ru.tinkoff.edu.java.scrapper.API.HTTP.HTTPStackOverflowClient;
-import ru.tinkoff.edu.java.scrapper.API.response.GitHub.GitHubAPIResponse;
-import ru.tinkoff.edu.java.scrapper.API.response.StackOverflow.StackOverflowItemAPIResponse;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import ru.tinkoff.edu.java.scrapper.configuration.ApplicationConfig;
 
 @SpringBootApplication
-@EnableConfigurationProperties(ApplicationConfig.class)
-public class ScrapperApplication {
-        public static void main(String[] args) {
-                var ctx = SpringApplication.run(ScrapperApplication.class, args);
-                ApplicationConfig config = ctx.getBean(ApplicationConfig.class);
-                System.out.println(config);
-                WebClient webClient = WebClient.create();
+@EnableScheduling
+public class ScrapperApplication
+{
 
-                HTTPGitHubClient gitHubClient = new HTTPGitHubClient(webClient);
-                GitHubLinkData userAndRepoGit = new GitHubLinkData("SpoiledPapyrus", "TInkoffProject");
-                GitHubAPIResponse response = gitHubClient.GetRepo(userAndRepoGit);
+    public static void main( String[] args )
+    {
+        var ctx = SpringApplication.run(ScrapperApplication.class, args);
+        ApplicationConfig config = ctx.getBean(ApplicationConfig.class);
+        System.out.println(config);
+    }
 
-                System.out.println(response);
-                HTTPStackOverflowClient stackOverflowClient = new HTTPStackOverflowClient(webClient);
-                StackOverflowLinkData QuestStack = new StackOverflowLinkData("2876551");
-                StackOverflowItemAPIResponse stackResponse =  stackOverflowClient.GetQuestion(QuestStack);
-                System.out.println(stackResponse);
-        }
+    @Bean("applicationConfig")
+    @ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
+    public ApplicationConfig applicationConfig() {
+        return new ApplicationConfig();
+    }
 }
