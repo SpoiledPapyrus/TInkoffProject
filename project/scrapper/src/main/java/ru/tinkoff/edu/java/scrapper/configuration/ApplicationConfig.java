@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.validation.annotation.Validated;
-
+import ru.tinkoff.edu.java.scrapper.configuration.access.AccessType;
 @Getter
 @Setter
 @ToString
@@ -16,5 +16,8 @@ public class ApplicationConfig {
 
     @NotNull
     Scheduler scheduler;
+
+    @NotNull
+    AccessType databaseAccessType;
 }
 

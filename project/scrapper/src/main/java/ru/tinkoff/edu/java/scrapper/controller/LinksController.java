@@ -7,15 +7,14 @@ import ru.tinkoff.edu.java.scrapper.dto.request.AddLinkRequest;
 import ru.tinkoff.edu.java.scrapper.dto.request.RemoveLinkRequest;
 import ru.tinkoff.edu.java.scrapper.dto.response.LinkResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.ListLinksResponse;
+import ru.tinkoff.edu.java.scrapper.service.interfaces.LinkService;
 import ru.tinkoff.edu.java.scrapper.service.jdbc.JdbcLinkService;
-
 
 @AllArgsConstructor
 @RestController()
 @RequestMapping("/links")
 public class LinksController {
-    private final JdbcLinkService service;
-
+    private final LinkService service;
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ListLinksResponse getTrackedLinks(@RequestHeader("Tg-Chat-Id") Long id) {
         return service.listAll(id);

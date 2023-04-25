@@ -45,6 +45,28 @@ public class LinkManipulator {
         return link;
     }
 
+    public LinkEntity createLinkEntity(URI url) {
+        Record record = stackOverflowLinkParser.parseLink(url.toString());
+        if (record == null) {
+            throw new RuntimeException("Invalid link '" + url + "'");
+        }
+        LinkEntity link = new LinkEntity();
+        link.setLink(url.toString());
+        link.setLastUpdate(OffsetDateTime.now());
+        if (record instanceof GitHubRecord) {
+            RepositoryResponse response = gitHubClient.getRepoInfo(((GitHubRecord) record).username(),
+                    ((GitHubRecord) record).repo());
+            link.setLastActivity(response.updated_at());
+            link.setOpenIssuesCount(response.open_issues_count());
+        }
+        if (record instanceof StackOverflowRecord) {
+            QuestionResponse response = stackOverflowClient.getQuestionInfo(((StackOverflowRecord) record).questionId());
+            link.setLastActivity(response.last_activity_date());
+            link.setAnswerCount(response.answer_count());
+        }
+        return link;
+    }
+
     public Record getRecord(Link link) {
         return stackOverflowLinkParser.parseLink(link.getLink().toString());
     }
